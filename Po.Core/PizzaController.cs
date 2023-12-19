@@ -83,5 +83,38 @@
 
             pizza.Ingredients.Remove(ingredientName);
         }
+
+        public void AddPizzaToOrder(string pizzaType)
+        {
+            if (IsPizzaExist(pizzaType) == false)
+                throw new InvalidOperationException("Pizza is not exist.");
+
+            var pizza = Pizzas.First(x => x.Type == pizzaType);
+
+            if (pizza.Ingredients.Any() == false)
+                throw new InvalidOperationException("Add ingredients to pizza.");
+
+            pizza.AddOrder();
+        }
+
+        public void RemovePizzaOfOrder(string pizzaType)
+        {
+            if (IsPizzaExist(pizzaType) == false)
+                throw new InvalidOperationException("Pizza is not exist.");
+
+            var pizza = Pizzas.First(x => x.Type == pizzaType);
+
+            if (pizza.CountOrders == 0)
+                throw new InvalidOperationException("Pizza is not ordered.");
+
+            pizza.RemoveOrder();
+        }
+
+        public List<Pizza> GetPopularityPizzaOrderedDes()
+        {
+            return Pizzas
+                .OrderByDescending(x => x.CountOrders)
+                .ToList();
+        }
     }
 }
